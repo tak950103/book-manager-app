@@ -17,7 +17,8 @@ export default function Login({onLogin}) {
             }, {
                 headers: {
                     "Accept": "application/json",
-                }
+                },
+                withCredentials: true
             });
 
             const token = response.data.access_token;

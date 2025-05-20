@@ -21,6 +21,7 @@ function App() {
                 Authorization: `Bearer ${token}`,
                 Accept: "application/json",
             },
+            withCredentials: true
         })
             .then((res) => setUser(res.data))
             .catch(() => {
