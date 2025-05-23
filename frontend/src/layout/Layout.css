@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,7 +15,8 @@
 
 .sidebar {
     width: 200px;
-    background-color: #ffefb0;
+    background-color: #996249;
+    color: #fff;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -28,7 +31,7 @@
 }
 
 .topbar {
-    background-color: #ffefb0;
+    background-color: #ffedb3;
     padding: 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
@@ -39,4 +42,54 @@
     flex-grow: 1;
     overflow-y: auto;
     padding: 1rem;
+}
+
+:root {
+    --font-family-main: 'Kosugi Maru', sans-serif;
+
+    --font-size-xl: 2.4rem;
+    --font-size-lg: 2rem;
+    --font-size-md: 1.6rem;
+    --font-size-sm: 1.3rem;
+
+    --color-bg: #fef9e7;
+    --color-sidebar: #ffefb0;
+    --color-button: #ffd966;
+    --color-button-hover: #ffcd39;
+    --color-border: #ffd966;
+    --border-radius: 12px;
+}
+
+body {
+    font-family: var(--font-family-main);
+    font-size: var(--font-size-md);
+    background-color: var(--color-bg);
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    width: 50%;
+    padding: 1rem 1.2rem;
+    font-size: var(--font-size-lg);
+    font-family: var(--font-family-main);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 1rem 2rem;
+    font-size: var(--font-size-lg);
+    font-family: var(--font-family-main);
+    background-color: var(--color-button);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--color-button-hover);
 }
