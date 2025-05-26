@@ -15,8 +15,9 @@ class BookController extends Controller
             'isbn' => 'required|string',
             'title' => 'required|string',
             'image_url' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
         ]);
+
+        $userId = auth()->id();
 
         $book = Book::firstOrCreate(
             ['isbn' => $validated['isbn']],
