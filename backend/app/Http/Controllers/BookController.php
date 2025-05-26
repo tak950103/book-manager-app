@@ -24,7 +24,7 @@ class BookController extends Controller
             ['title' => $validated['title'], 'image_url' => $validated['image_url']]
         );
 
-        $userBook = UserBook::where('user_id', $validated['user_id'])
+        $userBook = UserBook::where('user_id', $userId)
                             ->where('book_id', $book->id)
                             ->first();
 
@@ -32,7 +32,7 @@ class BookController extends Controller
             $userBook->increment('read_count');
         } else {
             UserBook::create([
-                'user_id' => $validated['user_id'],
+                'user_id' => $userId,
                 'book_id' => $book->id,
                 'read_count' => 1
             ]);
