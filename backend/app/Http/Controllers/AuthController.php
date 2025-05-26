@@ -16,19 +16,12 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('login_id', $request->login_id)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!Auth::attempt($request->only('login_id', 'password'))) {
             return response()->json(['message' => '認証に失敗しました'], 401);
         }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ]);
+    
+        $request->session()->regenerate(); // セッション再生成
+        return response()->json(['message' => 'ログイン成功']);
     }
 
     // ログイン中ユーザー情報取得
@@ -40,7 +33,10 @@ class AuthController extends Controller
     // ログアウト
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return response()->json(['message' => 'ログアウトしました']);
-    }
+    } 
 }
