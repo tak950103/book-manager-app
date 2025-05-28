@@ -11,22 +11,17 @@ export default function Login({onLogin}) {
         setError("");
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, {
-                login_id: loginId,
-                password: password,
-            }, {
-                headers: {
-                    "Accept": "application/json",
-                },
-                withCredentials: true
-            });
+          const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/login`, {
+              login_id: loginId,
+              password: password,
+          });
 
-            const token = response.data.access_token;
-            localStorage.setItem("token", token);
-            onLogin(response.data.user);
-        } catch (err) {
-            setError("ログインに失敗しました");
-        }
+          const token = response.data.access_token;
+          localStorage.setItem("token", token);
+          onLogin(response.data.user);
+      } catch (err) {
+          setError("ログインに失敗しました");
+      }
     };
 
     return (

@@ -1,25 +1,66 @@
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function BarcodeScanner({ onDetected, onClose }) {
+    const scannerRef = useRef(null); // scannerの再生成防止
+    const readerRef = useRef(null);
+
     useEffect(() => {
-        const scanner = new Html5QrcodeScanner("reader", {
-            fps: 10,
-            qrbox: 250
-        });
-
-        scanner.render(
-            (decodedText) => {
-                onDetected(decodedText);
-                scanner.clear(); // 読み取り後に停止
-                onClose();
-            },
-            (error) => {
-
+        const startScanner = () => {
+            if (!readerRef.current) {
+                console.error("reader element not found");
+                return;
             }
-        );
 
-        return () => scanner.clear();
+            readerRef.current.innerHTML = "";
+
+            if (scannerRef.current) {
+                scannerRef.current.clear().then (() => {
+                    scannerRef.current = null;
+                    initializeScanner();
+                }).catch(err => {
+                    console.error("Error clearing scanner before init:", err);
+                    initializeScanner();
+                });
+            } else {
+                initializeScanner();
+            }
+        };
+        
+        const initializeScanner = () => {
+            scannerRef.current = new Html5QrcodeScanner("reader", {
+                fps: 10,
+                qrbox: 250
+            });
+
+            scannerRef.current.render(
+                (decodedText) => {
+                    onDetected(decodedText);
+                    scannerRef.current.clear().then(() => {
+                        scannerRef.current = null;
+                        readerRef.current.innerHTML = "";
+                        onClose();
+                    });
+                },
+                (error) => {
+                    console.warn("読み取り失敗:", error);
+                }
+            );
+        };
+
+        const timeout = setTimeout(startScanner, 100);
+
+        return () => {
+            clearTimeout(timeout);
+            if (scannerRef.current) {
+                scannerRef.current.clear().then(() => {
+                    scannerRef.current = null;
+                    if (readerRef.current) readerRef.current.innerHTML = "";
+                }).catch(err => {
+                    console.error("scanner clear error:", err);
+                });
+            }
+        };
     }, []);
 
     return (
@@ -29,8 +70,24 @@ export default function BarcodeScanner({ onDetected, onClose }) {
             alignItems: "center", justifyContent: "center", zIndex: 9999
         }}>
             <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" }}>
-                <div id="reader" style={{ width: "300px", height: "300px" }} />
-                <button onClick={onClose} style={{ marginTop: "10px" }}>キャンセル</button>
+                <div id="reader" ref={readerRef} style={{ width: "300px", height: "300px" }} />
+                <button 
+                    onClick={() => {
+                        if (scannerRef.current) {
+                            scannerRef.current.clear().then(() => {
+                                scannerRef.current = null;
+                                readerRef.current.innerHTML = "";
+                                onClose();
+                            }).catch((err) => {
+                                console.error("cancel clear error:", err);
+                                onClose();
+                            });
+                        } else {
+                            onClose();
+                        }
+                    }} 
+                    style={{ marginTop: "10px" }}>
+                        キャンセル</button>
             </div>
         </div>
     );
