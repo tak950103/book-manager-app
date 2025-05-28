@@ -11,22 +11,27 @@ class UserBookController extends Controller
     {
         $userId = $request->user()->id;
 
-        $userBooks = UserBook::with('book') // bookリレーションをJOIN
+        $paginated = UserBook::with('book') // bookリレーションをJOIN
             ->where('user_id', $userId)
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($userBook) {
-                return [
-                    'id' => $userBook->id,
-                    'title' => $userBook->book->title,
-                    'image_url' => $userBook->book->image_url,
-                    'created_at' => $userBook->created_at->toDateString(),
-                    'read_count' => $userBook->read_count,
-                    'is_favorite' => (bool) $userBook->is_favorite,
-                ];
-            });
+            ->paginate(10);
 
-        return response()->json($userBooks);
+        $data = $paginated->getCollection()->transform(function ($userBook) {
+            return [
+                'id' => $userBook->id,
+                'title' => $userBook->book->title,
+                'image_url' => $userBook->book->image_url,
+                'created_at' => $userBook->created_at->toDateString(),
+                'read_count' => $userBook->read_count,
+                'is_favorite' => (bool) $userBook->is_favorite,
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+            'current_page' => $paginated->currentPage(),
+            'last_page' => $paginated->lastPage(),
+        ]);
     }
 
     public function toggleFavorite(Request $request, $id)
