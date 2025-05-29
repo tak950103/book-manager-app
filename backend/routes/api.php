@@ -13,4 +13,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/books', [BookController::class, 'store']);
     Route::get('/user-books', [UserBookController::class, 'index']);
     Route::patch('/user-books/{id}/favorite', [UserBookController::class, 'toggleFavorite']);
+    Route::get('/user-book/total-read-count', [UserBookController::class, 'totalReadCount']);
 });

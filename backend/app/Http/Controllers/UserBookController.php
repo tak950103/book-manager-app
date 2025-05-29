@@ -50,4 +50,13 @@ class UserBookController extends Controller
             'is_favorite' => $userBook->is_favorite,
         ]);
     }
+
+    public function totalReadCount(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $total = \App\Models\UserBook::where('user_id', $userId)->sum('read_count');
+
+        return response()->json(['total' => $total]);
+    }
 }
