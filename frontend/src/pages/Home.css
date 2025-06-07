@@ -1,0 +1,36 @@
+.stamp-img {
+    width: 60%;
+    height: auto;
+    object-fit: contain;
+}
+
+.pop {
+    animation: stamp-pop 0.4s ease forwards;
+    animation-fill-mode: both;
+}
+
+@keyframes stamp-pop {
+    0% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+    100% { transform: rotate(0deg); }
+}

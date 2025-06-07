@@ -1,32 +1,63 @@
 import {Outlet, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Layout.css";
-import logoutIcon from "../assets/logout.png"
-import homeIcom from "../assets/home.png"
-import pencilIcon from "../assets/pencil.png"
-import bookIcon from "../assets/book.png"
+import axios from "axios";
+import title from "../assets/title.png";
+import logoutIcon from "../assets/logout.png";
+import homeIcom from "../assets/home.png";
+import pencilIcon from "../assets/pencil.png";
+import bookIcon from "../assets/book.png";
+import iconStar from "../assets/background/icon_star.png";
+import iconBook from "../assets/background/icon_book.png";
+import iconBalloon from "../assets/background/icon_balloon.png";
+import iconCircle from "../assets/background/icon_circle.png";
+import iconCircle2 from "../assets/background/icon_circle2.png";
+import iconStar2 from "../assets/background/icon_star2.png";
 
-export default function Layout({ user, onLogout, children }) {
+export default function Layout({ user, onLogout, children, totalRead, onReadCountUpdate }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
         <div className="layout">
             <header className="topbar">
-                <button className="toggle-btn" onClick={() => setIsCollapsed(!isCollapsed)}
-                    style={{
-                        background: "none",
-                        alignSelf: "flex-start",
-                        fontSize: "38px",
-                        marginLeft: "0.6rem",
-                        margin: 0,
-                        padding: 0,
-                        color: "#996249",
-                    }}
-                >
-                    ☰
-                </button>
-                <div>いままでに よんだほん ⚪︎⚪︎さつ</div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                {/* 背景アイコンレイヤー */}
+                <div className="background-icons">
+                    <img src={iconStar} className="bg-icon" style={{ top: "10%", left: "5%" }} />
+                    <img src={iconStar} className="bg-icon" style={{ top: "0%", left: "60%" }} />
+                    <img src={iconBook} className="bg-icon" style={{ top: "30%", left: "23%" }} />
+                    <img src={iconBook} className="bg-icon" style={{ top: "0%", left: "75%" }} />
+                    <img src={iconBalloon} className="bg-icon" style={{ top: "35%", left: "70%" }} />
+                    <img src={iconBalloon} className="bg-icon" style={{ top: "15%", left: "15%" }} />
+                    <img src={iconBalloon} className="bg-icon" style={{ top: "0%", left: "54%" }} />
+                    <img src={iconCircle} className="bg-icon" style={{ top: "50%", left: "85%" }} />
+                    <img src={iconCircle} className="bg-icon" style={{ top: "-5%", left: "32%" }} />
+                    <img src={iconCircle} className="bg-icon" style={{ top: "30%", left: "50%" }} />
+                    <img src={iconCircle2} className="bg-icon" style={{ top: "30%", left: "8%" }} />
+                    <img src={iconCircle2} className="bg-icon" style={{ top: "10%", left: "34%" }} />
+                    <img src={iconCircle2} className="bg-icon" style={{ top: "0%", left: "80%" }} />
+                    <img src={iconCircle2} className="bg-icon" style={{ top: "30%", left: "65%" }} />
+                    <img src={iconStar2} className="bg-icon" style={{ top: "10%", left: "43%" }} />
+                    <img src={iconStar2} className="bg-icon" style={{ top: "-10%", left: "90%" }} />
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem"}}>
+                    <button className="toggle-btn" onClick={() => setIsCollapsed(!isCollapsed)}
+                        style={{
+                            background: "none",
+                            alignItems: "center",
+                            fontSize: "38px",
+                            marginLeft: "0.6rem",
+                            margin: 0,
+                            padding: 0,
+                            color: "#996249",
+                        }}
+                    >
+                        ☰
+                    </button>
+                    <div><img src={title} style={{ height : "85px", alignItems: "center", marginTop: "10px"}}/></div>
+                    <div>いままでに よんだほん <strong>{totalRead}</strong>さつ</div>
+                </div>
+                
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginLeft: "auto" }}>
                     <div>{user.name} さん</div>
                     <button onClick={onLogout}
                         style={{

@@ -1,0 +1,23 @@
+.finger-icon-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .finger-icon {
+    width: 60px;
+    position: absolute;
+    bottom: -50px;
+    right: -30px;
+    transform: rotate(-45deg);
+    animation: pointDown 1s ease-in-out infinite;
+    pointer-events: none; /* アイコンクリックを無効に */
+  }
+  
+  @keyframes pointDown {
+    0%, 100% {
+      transform: rotate(-45deg) translateY(0);
+    }
+    50% {
+      transform: rotate(-45deg) translateY(8px);
+    }
+  }

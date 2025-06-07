@@ -1,10 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
+import { FaUser, FaLock } from 'react-icons/fa';
+import title from "../assets/title.png";
+
 
 export default function Login({onLogin}) {
     const [loginId, setLoginId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -19,34 +25,50 @@ export default function Login({onLogin}) {
           const token = response.data.access_token;
           localStorage.setItem("token", token);
           onLogin(response.data.user);
+
+          navigate("/");
       } catch (err) {
           setError("ログインに失敗しました");
       }
     };
 
     return (
-        <div>
-      <h2>ログイン</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="ログインID"
-          value={loginId}
-          onChange={(e) => setLoginId(e.target.value)}
-          required
-        />
-        <br />
-        <input
-          type="password"
-          placeholder="パスワード"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <br />
-        <button type="submit">ログイン</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      <div className="login-container">
+        <div><img src={title} style={{ height : "180px", alignItems: "center", marginTop: "10px"}}/></div>
+        <div className="login-box">
+          <h2>ログイン</h2>
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column"}}>
+            <label style={styles.label}><FaUser className="icon"/> ログインID</label>
+            <input
+              type="text"
+              placeholder="ログインID"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
+              required
+            />
+            <label style={styles.label}><FaLock className="icon"/> パスワード</label>
+            <input
+              type="password"
+              placeholder="パスワード"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">ログイン</button>
+          </form>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </div>
+      </div>
     );
 }
+
+const styles = {
+  label: {
+    marginBottom: '6px',
+    fontWeight: 'bold',
+    color: '#676767',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+  },
+};

@@ -29,8 +29,17 @@ export default function BarcodeScanner({ onDetected, onClose }) {
         
         const initializeScanner = () => {
             scannerRef.current = new Html5QrcodeScanner("reader", {
-                fps: 10,
-                qrbox: 250
+                fps: 30,
+                qrbox: 300
+            }, {
+                strings: {
+                    scanButtonStartScanningText: "スキャンを開始",
+                    scanButtonStopScanningText: "スキャンを停止",
+                    scanningStatusScanning: "スキャン中...",
+                    scanningStatusIdle: "カメラ待機中...",
+                    cameraPermissionRequestMessage: "カメラの使用を許可してください。",
+                    cameraPermissionDenied: "カメラの使用が許可されませんでした。",
+                }
             });
 
             scannerRef.current.render(
@@ -69,7 +78,7 @@ export default function BarcodeScanner({ onDetected, onClose }) {
             backgroundColor: "rgba(0, 0, 0, 0.7)", display: "flex",
             alignItems: "center", justifyContent: "center", zIndex: 9999
         }}>
-            <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" }}>
+            <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
                 <div id="reader" ref={readerRef} style={{ width: "300px", height: "300px" }} />
                 <button 
                     onClick={() => {
@@ -86,7 +95,7 @@ export default function BarcodeScanner({ onDetected, onClose }) {
                             onClose();
                         }
                     }} 
-                    style={{ marginTop: "10px" }}>
+                    style={{ marginTop: "10px", width: "100%" }}>
                         キャンセル</button>
             </div>
         </div>

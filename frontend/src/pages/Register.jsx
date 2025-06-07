@@ -1,10 +1,14 @@
 import { useState } from "react";
 import BarcodeScanner from "../components/BarcodeScanner";
-import cameraIcon from "../assets/camera.png"
+import cameraIcon from "../assets/camera.png";
+import fingerIcon from "../assets/finger.png";
 import NumberKeyboard from "../components/NumberKeyboard"; 
 import axios from "axios";
+import useSound from "use-sound";
+import stampSfx from "../sounds/pon.mp3";
+import "./Register.css";
 
-export default function Register() {
+export default function Register({ onReadCountUpdate }) {
     const [isbn, setIsbn] = useState("");
     const [showScanner, setShowScanner] = useState(false);
     const [title, setTitle] = useState("");
@@ -13,6 +17,7 @@ export default function Register() {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [showKeyboard, setShowKeyboard] = useState(false);
+    const [play] = useSound(stampSfx);
 
     const handleIsbnChange = (value) => {
         setIsbn(value);
@@ -25,6 +30,7 @@ export default function Register() {
 
         // 13桁になったらAPIリクエスト
         if (value.length === 13) {
+            setShowKeyboard(false);
             const newTimeout = setTimeout(() => {
                 fetchBookInfo(value);
             }, 300);
@@ -74,6 +80,10 @@ export default function Register() {
     }
 
     const handleRegister = async () => {
+    if (isbn.length !== 13) {
+        setMessage("ISBNは13けたでなければなりません。");
+        return;
+    }
         setIsLoading(true);
         try {
             const response = await axios.post(
@@ -93,7 +103,16 @@ export default function Register() {
                 }
             );
 
-            alert("とうろくしました！");
+            play();
+            onReadCountUpdate();
+
+            setIsbn("");
+            setTitle("");
+            setCoverUrl("");
+
+            setTimeout(() => {
+                alert("とうろくしました！");
+            }, 100); 
         } catch (error) {
             console.error("登録エラー:", error);
             alert("とうろくできませんでした。");
@@ -261,26 +280,37 @@ export default function Register() {
                     </div>
                 )}
             </div>
+            
+            <div className="finger-icon-wrapper">
+                <button
+                    onClick={handleRegister}
+                    disabled={isLoading}
+                    className={isbn.length === 13 && title !== "" && !isLoading ? "press-pulse" : ""}
+                    style={{
+                        backgroundColor: isLoading ? "#ccc" : "#996249", 
+                        color: "white",
+                        padding: "1rem 2rem",
+                        fontSize: "1.2rem",
+                        border: "none",
+                        borderRadius: "12px",
+                        marginTop: "1rem",
+                        marginLeft: "10rem",
+                        cursor: isLoading ? "not-allowed" : "pointer",
+                        boxShadow: isLoading ? "none" : "0 6px 0 #7a4e31, 0 2px 12px rgba(0, 0, 0, 0.3)"
+                    }}
+                >
+                    {isLoading ? "とうろくちゅう..." : "とうろく"}
+                </button>
 
-            <button
-                onClick={handleRegister}
-                disabled={isLoading}
-                style={{
-                    backgroundColor: isLoading ? "#ccc" : "#996249", 
-                    color: "white",
-                    padding: "1rem 2rem",
-                    fontSize: "1.2rem",
-                    border: "none",
-                    borderRadius: "12px",
-                    marginTop: "1rem",
-                    marginLeft: "10rem",
-                    cursor: isLoading ? "not-allowed" : "pointer",
-                    boxShadow: isLoading ? "none" : "0 6px 0 #7a4e31, 0 2px 12px rgba(0, 0, 0, 0.3)"
-                }}
-            >
-                {isLoading ? "とうろくちゅう..." : "とうろく"}
-            </button>
-
+                {isbn.length === 13 && title !== "" && !isLoading && (
+                    <img
+                        src={fingerIcon}
+                        alt="おしてね"
+                        className="finger-icon"
+                    />
+                )}
+            </div>
+            
             {/* スキャナー */}
             {showScanner && (
                 <BarcodeScanner
