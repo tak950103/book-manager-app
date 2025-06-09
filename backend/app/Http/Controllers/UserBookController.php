@@ -74,7 +74,7 @@ class UserBookController extends Controller
             ->orderBy('month')
             ->pluck('count', 'month');
 
-        return response()->json($counts);
+        return response()->json($count);
     }
 
     // 最多登録本取得
