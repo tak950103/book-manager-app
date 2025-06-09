@@ -34,6 +34,7 @@ class UserBookController extends Controller
         ]);
     }
 
+    // お気に入り登録
     public function toggleFavorite(Request $request, $id)
     {
         $userId = $request->user()->id;
@@ -51,6 +52,7 @@ class UserBookController extends Controller
         ]);
     }
 
+    // 総登録数取得
     public function totalReadCount(Request $request)
     {
         $userId = $request->user()->id;
@@ -59,4 +61,54 @@ class UserBookController extends Controller
 
         return response()->json(['total' => $total]);
     }
+
+    // 月ごとの登録数
+    public function monthlyReadCount(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $count = \App\Models\UserBook::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+            ->where('user_id', $userId)
+            ->where('created_at', '>=', now()->subMonths(11)->startOfMonth())
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('count', 'month');
+
+        return response()->json($counts);
+    }
+
+    // 最多登録本取得
+    public function mostReadBook(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $mostRead = \App\Models\UserBook::where('user_id', $userId)
+            ->with('book')
+            ->orderByDesc('read_count')
+            ->orderByDesc('id') //同数なら新しい方を優先
+            ->first();
+
+        if (!$mostRead) {
+            return response()->json(null);
+        }
+
+        return response()->json([
+            'title' => $mostRead->book->title,
+            'image_url' => $mostRead->book->image_url,
+            'read_count' => $mostRead->read_count,
+        ]);
+    }
+
+    // お気に入り登録数取得
+    public function favoriteCount(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $count = \App\Models\UserBook::where('user_id', $userId)
+            ->where('is_favorite', true)
+            ->count();
+
+        return response()->json(['count' => $count]);
+    }
+
 }
