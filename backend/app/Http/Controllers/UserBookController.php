@@ -67,7 +67,7 @@ class UserBookController extends Controller
     {
         $userId = $request->user()->id;
 
-        $count = \App\Models\UserBook::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+        $count = \App\Models\UserBook::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(read_count) as count")
             ->where('user_id', $userId)
             ->where('created_at', '>=', now()->subMonths(11)->startOfMonth())
             ->groupBy('month')
