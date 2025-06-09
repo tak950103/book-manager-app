@@ -7,6 +7,7 @@ import axios from "axios";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import History from "./pages/History";
+import Achievement from "./pages/Achievement";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -90,6 +91,7 @@ function App() {
               <Route index element={<Home totalRead={totalRead} user={user}/>} />
               <Route path="register" element={<Register onReadCountUpdate={fetchReadCount}/>} />
               <Route path="history" element={<History />} />
+              <Route path="achievement" element={<Achievement />} />
             </Route>
           )}
           <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />

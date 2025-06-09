@@ -34,7 +34,7 @@ export default function Login({onLogin}) {
 
     return (
       <div className="login-container">
-        <div><img src={title} style={{ height : "180px", alignItems: "center", marginTop: "10px"}}/></div>
+        <div><img src={title} style={{ height : "150px", alignItems: "center", marginTop: "10px"}}/></div>
         <div className="login-box">
           <h2>ログイン</h2>
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column"}}>

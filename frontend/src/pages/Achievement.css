@@ -1,0 +1,95 @@
+.achievement-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fffdf5;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.achievement-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #5d3c2d;
+}
+
+.chart-section {
+    width: 100%;
+    margin-bottom: 2.5rem;
+}
+
+.summary-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    flex: 1;
+    min-width: 260px;
+    background-color: #fff7ea;
+    border: 2px solid #d8bfa1;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.summary-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #996249;
+}
+
+.summary-card p {
+    font-size: 1.1rem;
+    color: #444;
+}
+
+.book-image {
+    width: 150px;
+    height: auto;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    animation: sway 3s infinite ease-in-out;
+}
+
+@keyframes sway {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(2deg);
+    }
+    75% {
+        transform: rotate(-2deg);
+    }
+}
+
+.heart-img {
+    width: 150px;
+    animation: heartbeat 3s infinite ease-in-out;
+    transform: center;
+    display: block;
+    margin: 2rem auto;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+}

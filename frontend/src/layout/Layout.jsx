@@ -7,6 +7,7 @@ import logoutIcon from "../assets/logout.png";
 import homeIcom from "../assets/home.png";
 import pencilIcon from "../assets/pencil.png";
 import bookIcon from "../assets/book.png";
+import achieveIcon from "../assets/achievement.png";
 import iconStar from "../assets/background/icon_star.png";
 import iconBook from "../assets/background/icon_book.png";
 import iconBalloon from "../assets/background/icon_balloon.png";
@@ -94,6 +95,10 @@ export default function Layout({ user, onLogout, children, totalRead, onReadCoun
                     <NavLink to="/history" className="nav-link">
                         <img src={bookIcon} alt="りれき" className="nav-icon" />
                         {!isCollapsed && <span>りれき</span>}
+                    </NavLink>
+                    <NavLink to="/achievement" className="nav-link">
+                        <img src={achieveIcon} alt="たっせい" className="nav-icon" />
+                        {!isCollapsed && <span>たっせい</span>}
                     </NavLink>
                 </nav>
                 <main className="main">
