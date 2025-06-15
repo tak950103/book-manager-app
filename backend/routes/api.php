@@ -17,4 +17,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user-books/monthly-read-count', [UserBookController::class, 'monthlyReadCount']);
     Route::get('/user-books/most-read', [UserBookController::class, 'mostReadBook']);
     Route::get('/user-books/favorite-count', [UserBookController::class, 'favoriteCount']);
+    Route::get('/user-books/recent', [UserBookController::class, 'recent']);
 });

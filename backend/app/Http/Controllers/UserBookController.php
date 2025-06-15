@@ -111,4 +111,17 @@ class UserBookController extends Controller
         return response()->json(['count' => $count]);
     }
 
+    // 最近読んだ本の5冊を取得
+    public function recent(Request $request)
+    {
+        $user = $request->user();
+
+        $recentBooks = $user->books()
+            ->orderBy('user_books.created_at', 'desc')
+            ->limit(5)
+            ->get(['books.title']); // titleだけ
+
+        return response()->json($recentBooks);
+    }
+
 }
