@@ -28,7 +28,7 @@ class AdminUserSeeder extends Seeder
             ['login_id' => 'ai'],
             [
                 'name' => 'あい',
-                'email' => 'dummy@example.com',
+                'email' => 'ai@example.com',
                 'password' => Hash::make('ai'),
                 'role' => 'user',
             ]
@@ -38,7 +38,7 @@ class AdminUserSeeder extends Seeder
             ['login_id' => 'yui'],
             [
                 'name' => 'ゆい',
-                'email' => 'dummy@example.com',
+                'email' => 'yui@example.com',
                 'password' => Hash::make('yui'),
                 'role' => 'user',
             ]
